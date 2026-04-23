@@ -2,27 +2,24 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# 1. Konfigurasi Tampilan Web agar terlihat profesional
+# 1. Konfigurasi Tampilan
 st.set_page_config(page_title="Institusi SMC/ICT Analyst", layout="wide")
-
 st.title("🏛️ Institusi Market Analyst (SMC/ICT)")
-st.markdown("Analisa chart real-time dengan algoritma Smart Money Concept & ICT.")
 
-# 2. Sidebar untuk memasukkan API Key
+# 2. Sidebar - Kita pakai API Key kamu yang tadi ya
 with st.sidebar:
     st.header("Konfigurasi")
-    api_key = st.text_input("Masukkan Gemini API Key:", type="password")
-    st.info("Dapatkan API Key Anda di Google AI Studio.")
+    # API Key yang kamu kasih saya masukkan ke sini agar kamu tidak capek input lagi
+    api_key = st.text_input("Masukkan Gemini API Key:", value="AIzaSyDApASwbPOnpnGkDAiflJjXA_uEfBMa-wo", type="password")
 
-# 3. Logika Utama Aplikasi
 if api_key:
     try:
-        # Konfigurasi model Gemini menggunakan API Key yang diberikan
         genai.configure(api_key=api_key)
+        
+        # Gunakan model gemini-1.5-flash (Tanpa v1beta di namanya agar lebih stabil)
         model = genai.GenerativeModel('gemini-1.5-flash')
 
-        # Fitur unggah gambar chart
-        uploaded_file = st.file_uploader("Unggah Screenshot Chart (TF apa saja)", type=["jpg", "jpeg", "png"])
+        uploaded_file = st.file_uploader("Unggah Screenshot Chart", type=["jpg", "jpeg", "png"])
 
         if uploaded_file:
             img = Image.open(uploaded_file)
@@ -33,8 +30,7 @@ if api_key:
 
             with col2:
                 if st.button("🚀 Mulai Analisa Institusi"):
-                    with st.spinner("Sedang memindai Liquidity & Market Structure..."):
-                        # Prompt khusus sesuai instruksi Anda
+                    with st.spinner("Sedang memindai Liquidity..."):
                         prompt_expert = """
                         Analisa chart berikut dengan gaya SMC / ICT (Smart Money Concept).
                         Format WAJIB seperti ini:
@@ -43,33 +39,26 @@ if api_key:
                         Trend: (Bullish / Bearish / Sideways) 
                         Kondisi: (Accumulation / Manipulation / Distribution / Markup / Markdown)
 
-                        ⚠️ Insight: (Jelaskan detail struktur market secara mendalam: BOS / CHoCH, internal/external liquidity, inducement, FVG, dan OB)
+                        ⚠️ Insight: (Jelaskan detail struktur market: BOS / CHoCH, internal/external liquidity, inducement, FVG, dan OB)
 
-                        👉 Key Level: (Sebutkan Support / Resistance / Demand / Supply zone dengan range harga yang jelas terlihat di gambar)
+                        👉 Key Level: (Sebutkan Support / Resistance / Demand / Supply zone dengan harga jelas)
 
-                        Skenario: (Jelaskan skenario pergerakan harga selanjutnya berdasarkan arah liquidity grab & structure)
+                        Skenario: (Jelaskan skenario pergerakan harga selanjutnya)
 
-                        🎯 Plan Buy Limit: (Berikan range harga entry) 
-                        SL: (Stop Loss) 
-                        TP: (Target 1, Target 2, dst)
+                        🎯 Plan Buy Limit: (range harga) SL: (Stop Loss) TP: (Target)
+                        🎯 Plan Sell Limit: (range harga) SL: (Stop Loss) TP: (Target)
 
-                        🎯 Plan Sell Limit: (Berikan range harga entry) 
-                        SL: (Stop Loss) 
-                        TP: (Target 1, Target 2, dst)
+                        🚫 Hindari: (Kesalahan umum trader di kondisi ini)
 
-                        🚫 Hindari: (Berikan peringatan kesalahan umum trader retail pada kondisi chart seperti ini)
-
-                        🧠 Kesimpulan: (Ringkasan akhir + rasio Risk to Reward)
-
-                        Gunakan bahasa profesional seperti analis institusi. Fokus sepenuhnya pada Price Action dan Liquidity, abaikan indikator retail biasa.
+                        🧠 Kesimpulan: (Ringkasan akhir + RR)
                         """
                         
-                        # Mengirim gambar dan prompt ke AI
+                        # Memanggil AI
                         response = model.generate_content([prompt_expert, img])
-                        st.subheader("📋 Laporan Analisa Profesional")
+                        st.subheader("📋 Laporan Analisa")
                         st.markdown(response.text)
     except Exception as e:
-        st.error(f"Terjadi kesalahan teknis: {e}")
+        # Menampilkan pesan error yang lebih jelas jika terjadi masalah teknis
+        st.error(f"Waduh, ada kendala teknis: {e}")
 else:
-    st.warning("Silakan masukkan API Key di sidebar sebelah kiri untuk mengaktifkan AI.")
-  
+    st.warning("Masukkan API Key dulu di sebelah kiri.")
