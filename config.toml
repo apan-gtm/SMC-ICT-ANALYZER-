@@ -1,0 +1,4 @@
+project_id = "nyjtlrwrgifsyftemyrq"
+
+[functions.analyze-chart]
+verify_jwt = false
