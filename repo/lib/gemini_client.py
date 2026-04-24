@@ -22,8 +22,8 @@ except ImportError:
 from lib.prompts import SYSTEM_PROMPT, NEWS_SYSTEM_PROMPT
 
 # ── Model constants ───────────────────────────────────────────────────────────
-VISION_MODEL = "gemini-2.5-pro-preview-05-06"
-NEWS_MODEL   = "gemini-2.5-pro-preview-05-06"
+VISION_MODEL = "gemini-1.5-pro"
+NEWS_MODEL   = "gemini-1.5-pro"
 
 # ── Lazy client init ──────────────────────────────────────────────────────────
 @st.cache_resource
