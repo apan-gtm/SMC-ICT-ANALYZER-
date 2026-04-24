@@ -1,3 +1,7 @@
-streamlit
-google-generativeai
-Pillow
+# SMC Insight â€” Python dependencies
+# Pinned untuk stabilitas di Streamlit Cloud
+
+streamlit>=1.35.0,<2.0.0
+google-genai>=0.8.0,<1.0.0
+Pillow>=10.3.0,<11.0.0
+python-dotenv>=1.0.1,<2.0.0
