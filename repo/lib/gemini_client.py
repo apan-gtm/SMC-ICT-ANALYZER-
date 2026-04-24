@@ -21,17 +21,6 @@ except ImportError:
 
 from lib.prompts import SYSTEM_PROMPT, NEWS_SYSTEM_PROMPT
 
-from google import genai
-
-# The client gets the API key from the environment variable `GEMINI_API_KEY`.
-client = genai.Client()
-
-response = client.models.generate_content(
-    model="gemini-3-flash-preview", contents="Explain how AI works in a few words"
-)
-print(response.text)
-
-
 # ── Model constants (DIUBAH KE VERSI YANG BENAR) ──────────────────────────────
 # Gunakan gemini-2.0-flash-exp untuk fitur terbaru & tercepat
 VISION_MODEL = "gemini-3-flash-preview"
